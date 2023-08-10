@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/utils/app_routes.dart';
 
 class ProductItem extends StatefulWidget {
-  final Product product;
-
-  const ProductItem(this.product, {super.key});
+  const ProductItem({super.key});
 
   @override
   State<ProductItem> createState() => _ProductItemState();
@@ -15,6 +14,8 @@ class _ProductItemState extends State<ProductItem> {
   bool onHover = false;
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
+
     return Card(
       elevation: 3,
       shape: const RoundedRectangleBorder(
@@ -27,13 +28,15 @@ class _ProductItemState extends State<ProductItem> {
         child: GridTile(
           footer: GridTileBar(
             title: Text(
-              widget.product.title,
+              product.title,
               textAlign: TextAlign.center,
             ),
             leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                product.toggleFavorite();
+              },
               icon: Icon(
-                Icons.favorite,
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: Theme.of(context).primaryColor,
               ),
             ),
@@ -54,11 +57,11 @@ class _ProductItemState extends State<ProductItem> {
             onTap: () {
               Navigator.of(context).pushNamed(
                 AppRoutes.PRODUCT_DETAIL,
-                arguments: widget.product,
+                arguments: product,
               );
             },
             child: Image.network(
-              widget.product.imageUrl,
+              product.imageUrl,
               fit: BoxFit.cover,
             ),
           ),

@@ -1,8 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/utils/app_routes.dart';
 
 import '../components/product_grid.dart';
+import '../models/cart.dart';
 
 enum FilterOptions {
   Favorite,
@@ -17,7 +20,6 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-
   bool _showFavoteOnly = false;
 
   @override
@@ -51,6 +53,23 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 });
               }
             },
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Consumer<Cart>(
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AppRoutes.CART);
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                ),
+                builder: (ctx, cart, child) => Badge(
+                  label: Text(cart.itemsQuantity.toString()),
+                  child: child,
+                ),
+              ),
+            ),
           )
         ],
       ),

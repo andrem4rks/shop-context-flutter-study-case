@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/models/cart.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/utils/app_routes.dart';
 
@@ -15,6 +16,7 @@ class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<Cart>(context, listen: false);
 
     return Card(
       elevation: 3,
@@ -28,7 +30,7 @@ class _ProductItemState extends State<ProductItem> {
         child: GridTile(
           footer: GridTileBar(
             title: Text(
-              product.title,
+              product.name,
               textAlign: TextAlign.center,
             ),
             leading: IconButton(
@@ -43,7 +45,9 @@ class _ProductItemState extends State<ProductItem> {
               ),
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                cart.addItem(product);
+              },
               icon: Icon(
                 Icons.shopping_cart,
                 color: Theme.of(context).primaryColor,

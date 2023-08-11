@@ -14,7 +14,7 @@ class _ProductItemState extends State<ProductItem> {
   bool onHover = false;
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    final product = Provider.of<Product>(context, listen: false);
 
     return Card(
       elevation: 3,
@@ -35,9 +35,11 @@ class _ProductItemState extends State<ProductItem> {
               onPressed: () {
                 product.toggleFavorite();
               },
-              icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: Theme.of(context).primaryColor,
+              icon: Consumer<Product>(
+                builder: (ctx, product, _) => Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
             trailing: IconButton(
